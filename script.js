@@ -146,14 +146,6 @@ function addTask() {
     return;
   }
 
-  const hasVeryLongWord = text.split(' ').some(word => word.length > 30);
-  
-  if (hasVeryLongWord) {
-    showError('Слишком длинное слово!');
-    taskInput.focus();
-    return;
-  }
-
   clearError();
 
   const task = {

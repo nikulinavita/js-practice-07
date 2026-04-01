@@ -93,17 +93,21 @@ function createTaskCard(task) {
   card.dataset.id       = task.id;
   card.dataset.priority = task.priority;
 
+  // Добавляем класс для высокого приоритета (PRO: используется для сортировки)
   if (task.priority === 'high') {
     card.classList.add('priority-high');
   }
 
+  // Заголовок задачи
   const title = document.createElement('h3');
   safeText(title, task.text); // WHY textContent? — TODO: ваш комментарий
 
+  // Бейдж приоритета
   const badge = document.createElement('span');
   badge.className = `priority-badge ${task.priority}`;
   safeText(badge, PRIORITY_LABELS[task.priority] || task.priority);
 
+  // Кнопки действий
   const actions = document.createElement('div');
   actions.className = 'card-actions';
 
@@ -142,6 +146,14 @@ function addTask() {
     return;
   }
 
+  const hasVeryLongWord = text.split(' ').some(word => word.length > 30);
+  
+  if (hasVeryLongWord) {
+    showError('Слишком длинное слово!');
+    taskInput.focus();
+    return;
+  }
+
   clearError();
 
   const task = {
@@ -155,6 +167,7 @@ function addTask() {
   const todoList = document.querySelector('[data-status="todo"] .task-list');
   todoList.appendChild(card);
 
+  // Сбрасываем форму
   taskInput.value = '';
   prioritySelect.selectedIndex = 1; // сброс на «Средний»
   taskInput.focus();
@@ -172,6 +185,7 @@ function addTask() {
 // // WHY addEventListener? — Это современный стандарт. Позволяет вешать несколько разных обработчиков на одно событие и дает доступ к полезным опциям (например, once или capture). Устаревший onclick так не умеет.
 addTaskBtn.addEventListener('click', addTask);
 
+// Обработка клавиатуры в поле ввода
 // WHY keydown? — чтобы обрабатывать нажатия клавиш.
 taskInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {

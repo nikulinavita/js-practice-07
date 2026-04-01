@@ -367,6 +367,10 @@ body.dark-mode .task-card.priority-high {
 }
 
 .task-card h3 {
+  word-wrap: break-word;  
+  overflow-wrap: break-word;  
+  word-break: break-all;
+  hyphens: auto; 
   margin: 0;
   font-size: 0.95rem;
   color: #1e293b;
